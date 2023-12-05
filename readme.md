@@ -3,7 +3,7 @@
 Here's an implementation of Bizhawk that can run Lua scripts using LuaSocket.\
 Only tested with Windows 10 Pro Version 22H2, Python 3.12.0 and Bizhawk 2.9.1.
 
-## How to use it
+## How to use it ?
 
 - Download and unzip your Bizhawk emulator in ./bizhawk directory.
 - Launch EmuHawk.exe
