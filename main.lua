@@ -2,14 +2,17 @@ socketModule = dofile('CustomSocket.lua')
 
 framecounter = 0
 
+
+print('Waiting for connection ...')
+
 -- Connect the socket, this is blocking.
-socketModule.establishConnection()
+-- socketModule.establishConnection()
 
 -- Main Loop.
 while true do
 
     -- Connect the socket, this is non-blocking.
-    -- coroutine.resume(socketModule.establishConnectionCoroutine)
+    coroutine.resume(socketModule.establishConnectionCoroutine)
     
     socketModule.sendMessage(framecounter)
 

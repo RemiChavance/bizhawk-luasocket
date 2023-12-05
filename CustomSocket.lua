@@ -1,8 +1,12 @@
 -- load namespace
 socket = require('socket')
 
+local ADDR = '127.0.0.1'
+local PORT = 12345
+
 local isConnected = false
 local conn = nil
+
 
 -- Script shutdown hook.
 event.onexit(function()
@@ -13,6 +17,7 @@ event.onexit(function()
 	end
 end)
 
+
 -- Disconnect the socket.
 function disconnect()
 	conn:shutdown()
@@ -22,17 +27,22 @@ function disconnect()
 end
 
 
+-- Handle received data.
+function handleData(data)
+	print("Received: " .. resp)
+end
+
+
 -- Coroutine for establish a connection on the socket,
 -- this will not block the main loop.
 local establishConnectionCoroutine = coroutine.create(function()
-	while 1 do
+	while true do
 		if not isConnected then
 			if (conn == nil) then
 				conn = socket:tcp()
 				conn:settimeout(0) -- non-blocking
 			end
-			print("Attempting to connect...")
-			local stat, err = conn:connect("127.0.0.1", 12345, 1)
+			local stat, err = conn:connect(ADDR, PORT, 1)
 			if (stat == 1) then
 				print("Connection established: " .. stat)
 				isConnected = true
@@ -40,7 +50,7 @@ local establishConnectionCoroutine = coroutine.create(function()
 				print("Connection already established: " .. err)
 				isConnected = true;
 			else
-				print("Error creating connection: " .. err)
+				-- print("Error creating connection: " .. err)
 			end
 		else 
 			-- print("Already connected")
@@ -76,9 +86,9 @@ end
 local readMessageCoroutine = coroutine.create(function()
 	while 1 do
 		if isConnected then
-			resp, err = conn:receive('*l') -- all messages have to end with '\n'
+			resp, err = conn:receive('*l') -- All messages have to end with '\n'.
 			if (resp) then
-				print("Received: " .. resp)
+				handleData(resp)
 			else
 				-- print("Error: " .. err)
 			end
@@ -92,7 +102,7 @@ function sendMessage(m)
 	if isConnected then
 		conn:send(m)
 	else
-		print('Not connected')
+		-- print('Not connected')
 	end
 end
 
