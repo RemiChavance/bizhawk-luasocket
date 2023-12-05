@@ -1,6 +1,6 @@
 # Bizhawk LuaSocket
 
-Here's an implementation of Bizhawk that can run Lua script using LuaSocket.
+Here's an implementation of Bizhawk that can run Lua scripts using LuaSocket.\
 Only tested with Windows 10 Pro Version 22H2, Python 3.12.0, Bizhawk 2.9.1
 
 ## How to use it
@@ -12,17 +12,17 @@ Only tested with Windows 10 Pro Version 22H2, Python 3.12.0, Bizhawk 2.9.1
 - Open Main.lua file at the root of this project
 - In a terminal run python Main.py
 
-Make sure to have 12345 port available on localhost.
-You can configure address and port at the top of Main.py and CustomSocket.lua.
+Make sure to have port 12345 available on localhost.\
+You can configure the address and the port at the top of Main.py and CustomSocket.lua.\
 
-Every frame, Lua will send a framecounter to python via socket.
-Every received framcounter, Python will response to Lua with the framecounter it just received.
-Python and Lua will both displaying the framecounter.
+Every frame, Lua will send a framecounter to python via socket.\
+Every received framecounter, Python will respond to Lua with the framecounter it just received.\
+Python and Lua will both display the framecounter.
 
 ## What are the changing ?
 
-Some files are simply added in bizhawk's root directory.
-Theses files implement LuaSocket and Bizhawk can use them.
+Some files are simply added in Bizhawk's root directory.\
+These files implement LuaSocket and Bizhawk can use them.\
 See ./bizhawk/README.md.
 
 ## Sources
