@@ -1,0 +1,14 @@
+bizhawk/dll
+bizhawk/Firmware
+bizhawk/Gameboy
+bizhawk/gamedb
+bizhawk/Lua
+bizhawk/NES
+bizhawk/overlay
+bizhawk/Shaders
+bizhawk/Socket
+bizhawk/Tools
+bizhawk/*.ini
+bizhawk/*.json
+bizhawk/*.exe
+bizhawk/*.config
