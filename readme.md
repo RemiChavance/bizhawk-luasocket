@@ -13,7 +13,7 @@ Only tested with Windows 10 Pro Version 22H2, Python 3.12.0, Bizhawk 2.9.1
 - In a terminal run python Main.py
 
 Make sure to have port 12345 available on localhost.\
-You can configure the address and the port at the top of Main.py and CustomSocket.lua.\
+You can configure the address and the port at the top of Main.py and CustomSocket.lua.
 
 Every frame, Lua will send a framecounter to python via socket.\
 Every received framecounter, Python will respond to Lua with the framecounter it just received.\
