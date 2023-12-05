@@ -1,17 +1,11 @@
--- WORKS PERFECTLY SEND AND RECEIVE !
-
 -- load namespace
 socket = require('socket')
-print("luasocket is loaded!")
-print()
 
--- script global variable
-local frameCount = 0
 local isConnected = false
 local conn = nil
 
--- script shutdown hook
-event.onexit( function()
+-- Script shutdown hook.
+event.onexit(function()
 	if isConnected then
 		print("Closing connection")
 		conn:shutdown()
@@ -19,7 +13,7 @@ event.onexit( function()
 	end
 end)
 
-
+-- Disconnect the socket.
 function disconnect()
 	conn:shutdown()
 	conn:close()
@@ -27,8 +21,10 @@ function disconnect()
 	conn = nil
 end
 
--- bind tcp socket to the server
-local establishConnection = coroutine.create( function()
+
+-- Coroutine for establish a connection on the socket,
+-- this will not block the main loop.
+local establishConnectionCoroutine = coroutine.create(function()
 	while 1 do
 		if not isConnected then
 			if (conn == nil) then
@@ -47,17 +43,40 @@ local establishConnection = coroutine.create( function()
 				print("Error creating connection: " .. err)
 			end
 		else 
-			print("Already connected")
+			-- print("Already connected")
 		end
 		coroutine.yield()
 	end
 end);
 
--- coroutine for looking for server messages
-local readMessage = coroutine.create( function()
+
+-- Function for establish a connection on the socket,
+-- this function will block the main loop.
+function establishConnection()
+	print("Attempting to connect...")
+	while not isConnected do
+		if (conn == nil) then
+			conn = socket:tcp()
+			conn:settimeout(0) -- non-blocking
+		end
+		local stat, err = conn:connect("127.0.0.1", 12345, 1)
+		if (stat == 1) then
+			print("Connection established: " .. stat)
+			isConnected = true
+		elseif (err == 'already connected') then
+			-- print("Connection already established: " .. err)
+			isConnected = true;
+		else
+			-- print("Error creating connection: " .. err)
+		end
+	end
+end
+
+-- Coroutine for looking for server messages.
+local readMessageCoroutine = coroutine.create(function()
 	while 1 do
 		if isConnected then
-			resp, err = conn:receive('*l')
+			resp, err = conn:receive('*l') -- all messages have to end with '\n'
 			if (resp) then
 				print("Received: " .. resp)
 			else
@@ -68,25 +87,19 @@ local readMessage = coroutine.create( function()
 	end
 end)
 
-print("Starting main loop")
-while true do
-	if (math.fmod(frameCount, 60) == 0) then
-		-- print("Now")
-	end
-
-	if (not isConnected) and (math.fmod(frameCount, 60) == 0) then
-		coroutine.resume(establishConnection)
-	end
-
+-- Send m through the socket.
+function sendMessage(m)
 	if isConnected then
-		coroutine.resume(readMessage)
+		conn:send(m)
+	else
+		print('Not connected')
 	end
-		
-	if isConnected then --and (math.fmod(frameCount, 10) == 0) then
-		conn:send(frameCount)
-        -- console.log('sending message!')
-	end
-
-	emu.frameadvance()
-    frameCount = frameCount + 1
 end
+
+
+return {
+	establishConnectionCoroutine = establishConnectionCoroutine,
+	establishConnection = establishConnection,
+	readMessageCoroutine = readMessageCoroutine,
+	sendMessage = sendMessage
+}
