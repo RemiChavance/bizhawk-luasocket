@@ -19,7 +19,7 @@ Every frame, Lua will send a framecounter to python via socket.\
 Every received framecounter, Python will respond to Lua with the framecounter it just received.\
 Python and Lua will both display the framecounter.
 
-## What are the changing ?
+## How does it works ?
 
 Some files are simply added in Bizhawk's root directory.\
 These files implement LuaSocket and Bizhawk can use them.\
