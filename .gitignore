@@ -6,7 +6,6 @@ bizhawk/Lua
 bizhawk/NES
 bizhawk/overlay
 bizhawk/Shaders
-bizhawk/Socket
 bizhawk/Tools
 bizhawk/*.ini
 bizhawk/*.json
