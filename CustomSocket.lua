@@ -29,7 +29,7 @@ end
 
 -- Handle received data.
 function handleData(data)
-	print("Received: " .. resp)
+	print("Received: " .. data)
 end
 
 
